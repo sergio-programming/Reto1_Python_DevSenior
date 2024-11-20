@@ -1,5 +1,6 @@
 from datetime import datetime
 import statistics
+from textwrap import dedent
 
 class Experimento:
     def __init__(self, nombre, fechaExperimento, tipoExperimento, resultadosObtenidos):
@@ -12,7 +13,7 @@ class Experimento:
 def ingresarExperimento(listaExperimentos):
     print()
     print("#"*30)
-    print("MODULO INGRESO DE EXPERIMENTOS")
+    print("MODULO DE REGISTRO DE EXPERIMENTOS")
     print("#"*30)
     try:
         nroExperimentos = int(input("\nDigite la cantidad de experimentos que desea ingresar: "))
@@ -58,7 +59,60 @@ def ingresarExperimento(listaExperimentos):
     else:
         print("\nExperimento agregado exitosamente!")
         input("Presione <Enter> para continuar")
+        
+def visualizarExperimentos(listaExperimentos):
+    if not listaExperimentos:
+        print("\nNo hay experimentos para visualizar.")
+        input("Presione <Enter> para continuar")
+    else:
+        print()
+        print("#"*30)
+        print("MODULO DE VISTA DE EXPERIMENTOS")
+        print("#"*30)
+        for i, experimento in enumerate(listaExperimentos, start=1):
+            print(dedent(
+                f"""\nExperimento #{i}:
+                Nombre del experimento: {experimento.nombre}
+                Fecha de realización: {experimento.fechaExperimento.strftime('%d/%m/%Y')}
+                Tipo de Experimento: {experimento.tipoExperimento}
+                Resultados Obtenidos: {experimento.resultadosObtenidos}"""
+            ))
             
+def analisisResultados(listaExperimentos):
+    if not listaExperimentos:
+        print("\nNo hay experimento ni resultados para visualizar.")
+        input("Presione <Enter> para continuar")
+    else:
+        print()
+        print("#"*30)
+        print("MODULO DE ANALISIS DE EXPERIMENTOS")
+        print("#"*30)       
+        for experimento in listaExperimentos:
+            promedio = statistics.mean(experimento.resultadosObtenidos)
+            maximo = max(experimento.resultadosObtenidos)
+            minimo = min(experimento.resultadosObtenidos)
+            print(dedent(
+                f"""\nANALISIS DE RESULTADOS EXPERIMENTO: {experimento.nombre}
+                Resultado Promedio: {promedio}
+                Resultado Maximo: {maximo}
+                Resultado Minimo: {minimo}"""
+            ))
+        
+def generarInforme(listaExperimentos):
+    if not listaExperimentos:
+        print("\nNo hay experimentos registrados")
+        input("Presione <Enter> para continuar")
+    else:
+        with open("informe_experimentos.txt", "w") as archivo:
+            for experimento in listaExperimentos:
+                archivo.write(f"Nombre: {experimento.nombre}\n")
+                archivo.write(f"Fecha limite: {experimento.fechaExperimento.strftime('%d/%m/%Y')}")
+                archivo.write(f"Categoria: {experimento.tipoExperimento}\n")
+                archivo.write(f"Horas dedicadas: {experimento.resultadosObtenidos}\n")
+                archivo.write("\n")
+        print("Informe generado como 'informe_experimentos.txt")
+    
+        
             
 def menu():
     listaExperimentos = []
@@ -67,11 +121,13 @@ def menu():
         print("#"*30)
         print("BIENVENIDO A LA PLATAFORMA DE GESTION DE EXPERIMENTOS")        
         print("#"*30)
-        print("""1. Gestión de Experimentos.
-2. Visualizar experimentos.
-3. Analisis de Resultados.
-4. Generacion de Informe de Resultados.
-5. Salir del programa.""")
+        print(dedent(
+            """1. Registro de Experimentos.
+            2. Visualizar experimentos.
+            3. Analisis de Resultados.
+            4. Generacion de Informe de Resultados.
+            5. Salir del programa."""
+            ))
         
         while True:
             try:
@@ -86,13 +142,13 @@ def menu():
             ingresarExperimento(listaExperimentos)
     
         elif opcion == 2:
-            pass
+            visualizarExperimentos(listaExperimentos)
     
         elif opcion == 3:
-            pass
+            analisisResultados(listaExperimentos)
     
         elif opcion == 4:
-            pass
+            generarInforme(listaExperimentos)
     
         elif opcion == 5:
             print("\nGracias por usar nuestro software, nos vemos pronto!!!")
