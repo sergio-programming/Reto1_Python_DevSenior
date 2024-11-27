@@ -167,9 +167,9 @@ def generarInforme(listaExperimentos):
         with open("informe_experimentos.txt", "w") as archivo:
             for experimento in listaExperimentos:
                 archivo.write(f"Nombre: {experimento.nombre}\n")
-                archivo.write(f"Fecha limite: {experimento.fechaExperimento.strftime('%d/%m/%Y')}")
-                archivo.write(f"Categoria: {experimento.tipoExperimento}\n")
-                archivo.write(f"Horas dedicadas: {experimento.resultadosObtenidos}\n")
+                archivo.write(f"Fecha de realización: {experimento.fechaExperimento.strftime('%d/%m/%Y')}\n")
+                archivo.write(f"Tipo de Experimento: {experimento.tipoExperimento}\n")
+                archivo.write(f"Resultados Obtenidos: {experimento.resultadosObtenidos}\n")
                 archivo.write("\n")
         print("Informe generado como 'informe_experimentos.txt")
         input("Presione <Enter> para continuar")
@@ -185,7 +185,7 @@ def compararExperimentos(listaExperimentos):
     else:
         print()
         print("#"*30)
-        print("MODULO DE ANALISIS DE EXPERIMENTOS")
+        print("MODULO DE COMPARATIVA DE EXPERIMENTOS")
         print("#"*30)
         print(f"\nActualmente tenemos {len(listaExperimentos)} registrados")
     
@@ -196,15 +196,22 @@ def compararExperimentos(listaExperimentos):
                 print("\nEl tipo de dato ingresado no es valido. Por favor ingrese un número.")
                 input("Presione <Enter> para continuar")
             else:
-                break
+                if experimentos_a_comparar < 2:
+                    print("\nDebe seleccionar minimo 2 experimentos para comparar. Por favor intente")
+                    input("Presione Enter para continuar")
+                elif experimentos_a_comparar > len(listaExperimentos):
+                    print("\nEstimado usuario, ud no puede comparar una cantidad de experimentos que es mayor a la cantidad de experimentos registrados. Por favor intente")
+                    input("Presione Enter para continuar")
+                else:
+                    break
         
+        experimentos = []
+        promedios = []
         for i in range(experimentos_a_comparar):
-            experimentos = []
-            promedios = []
             while True:
                 try:
-                    experimento = int(input(f"Seleccione un experimento (ingrese un número del 1 al {len(listaExperimentos)})"))
-                    if experimento < 0 or experimento >= len(listaExperimentos):
+                    nroExperimento = int(input(f"Seleccione un experimento (ingrese un número del 1 al {len(listaExperimentos)}): "))
+                    if nroExperimento < 1 or nroExperimento > len(listaExperimentos):
                         raise IndexError
                 except ValueError:
                     print("\nEl tipo de dato ingresado no es valido. Por favor ingrese un número.")
@@ -214,8 +221,8 @@ def compararExperimentos(listaExperimentos):
                     input("Presione <Enter> para continuar")
                 else:
                     break
-            experimentos.append(listaExperimentos[experimento])
-            promedio = statistics.mean(listaExperimentos[experimento].resultadosObtenidos)
+            experimentos.append(listaExperimentos[nroExperimento-1])
+            promedio = statistics.mean(listaExperimentos[nroExperimento-1].resultadosObtenidos)
             promedios.append(promedio)
         
         print("\nResultados de los experimentos seleccionados:")    
@@ -224,8 +231,10 @@ def compararExperimentos(listaExperimentos):
 Promedio de resultados del experimento: {promedios[i]}""")
             
         max_promedio = max(zip(promedios, experimentos), key=lambda x: x[0])
-        print(f"El experimento con el promedio mayor es: {max_promedio[1].nombre}")
+        print("\n" + "#"*30)
+        print(f"\nEl experimento con el promedio mayor es: {max_promedio[1].nombre}")
         print(f"Promedio: {max_promedio[0]}")
+        print("#"*30)
             
 def menu():
     #Lista para almacenar los experimentos
@@ -240,8 +249,9 @@ def menu():
 2. Visualizar Experimentos.
 3. Analisis de Resultados de Experimentos.
 4. Eliminar Experimento.
-5. Generacion de Informe de Resultados.
-6. Salir del programa.""")
+5. Comparar Experimentos.
+6. Generar Informe de Resultados.
+7. Salir del programa.""")
             
         #Bucle while para solicitar la opcion hasta que se ingrese un número entero
         while True:
@@ -265,11 +275,14 @@ def menu():
             
         elif opcion == 4:
             eliminarExperimento(listaExperimentos)
-    
+            
         elif opcion == 5:
-            generarInforme(listaExperimentos)
+            compararExperimentos(listaExperimentos)
     
         elif opcion == 6:
+            generarInforme(listaExperimentos)
+    
+        elif opcion == 7:
             print("\nGracias por usar nuestro software, nos vemos pronto!!!")
             input("Presione <Enter> para continuar")
             break
