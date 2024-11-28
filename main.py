@@ -16,14 +16,24 @@ def ingresarExperimento(listaExperimentos):
     print("#"*30)
     print("MODULO DE REGISTRO DE EXPERIMENTOS")
     print("#"*30)
-    #try-except para manejar errores por si el usuario no ingresa un número entero
-    try:
-        nroExperimentos = int(input("\nDigite la cantidad de experimentos que desea ingresar: "))
-    #Si no se ingresa un número se captura el error y se muestra el mensaje    
-    except ValueError:
-        print("El tipo de dato ingresado no es valido. Por favor ingrese un número.")
-        input("Presione <Enter> para continuar")
-        return
+    
+    #Bucle while hasta solicitar el dato hasta que se ingrese un numero entero positivo
+    while True:
+        #try-except para manejar errores por si el usuario no ingresa un número entero
+        try:
+            nroExperimentos = int(input("\nDigite la cantidad de experimentos que desea ingresar: "))
+        #Si no se ingresa un número se captura el error y se muestra el mensaje    
+        except ValueError:
+            print("El tipo de dato ingresado no es valido. Por favor ingrese un número.")
+            input("Presione <Enter> para continuar")
+        else:
+            if nroExperimentos <= 0:
+                print("La cantidad ingresada no es valida. Por favor intente de nuevo.")
+                input("Presione <Enter> para continuar")
+            else:
+                break
+            
+    
     
     #Bucle for para que el usuario ingrese los datos de los experimentos    
     for i in range(nroExperimentos):
@@ -140,6 +150,7 @@ def eliminarExperimento(listaExperimentos):
         print("#"*30)
         print("MODULO DE ANALISIS DE EXPERIMENTOS")
         print("#"*30)
+        print(f"\nActualmente tenemos {len(listaExperimentos)} registrados")
         #Bucle while para solicitar el dato hasta que se ingrese un número entero
         while True:
             #try-except para manejar errores por si el usuario no ingresa un número entero
@@ -232,7 +243,7 @@ Promedio de resultados del experimento: {promedios[i]}""")
             
         max_promedio = max(zip(promedios, experimentos), key=lambda x: x[0])
         print("\n" + "#"*30)
-        print(f"\nEl experimento con el promedio mayor es: {max_promedio[1].nombre}")
+        print(f"El experimento con el promedio mayor es: {max_promedio[1].nombre}")
         print(f"Promedio: {max_promedio[0]}")
         print("#"*30)
             
