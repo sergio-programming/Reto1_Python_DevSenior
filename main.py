@@ -10,7 +10,7 @@ class Experimento:
         self.resultadosObtenidos = resultadosObtenidos
      
 #Funcion para ingresar experimentos 
-def ingresarExperimento(listaExperimentos):
+def ingresarExperimentos(listaExperimentos):
     #Mensaje de bienvenida al modulo de registro de experimentos
     print()
     print("#"*30)
@@ -103,7 +103,7 @@ def visualizarExperimentos(listaExperimentos):
     else:
         print()
         print("#"*30)
-        print("MODULO DE VISTA DE EXPERIMENTOS")
+        print("MODULO DE VISUALIZACIÓN DE EXPERIMENTOS")
         print("#"*30)
         #Bucle for para mostrar cada experimento
         for i, experimento in enumerate(listaExperimentos, start=1):
@@ -125,7 +125,7 @@ def analisisResultados(listaExperimentos):
     else:
         print()
         print("#"*30)
-        print("MODULO DE ANALISIS DE EXPERIMENTOS")
+        print("MODULO DE ANALISIS DE RESULTADOS DE EXPERIMENTOS")
         print("#"*30)       
         for experimento in listaExperimentos:
             promedio = statistics.mean(experimento.resultadosObtenidos)
@@ -133,7 +133,7 @@ def analisisResultados(listaExperimentos):
             minimo = min(experimento.resultadosObtenidos)
             print(
                 f"""\nANALISIS DE RESULTADOS EXPERIMENTO: {experimento.nombre}
-                Resultado Promedio: {promedio}
+                Resultado Promedio: {promedio:.2f}
                 Resultado Maximo: {maximo}
                 Resultado Minimo: {minimo}"""
             )
@@ -148,9 +148,9 @@ def eliminarExperimento(listaExperimentos):
     else:
         print()
         print("#"*30)
-        print("MODULO DE ANALISIS DE EXPERIMENTOS")
+        print("MODULO DE ELIMINACIÓN DE EXPERIMENTO")
         print("#"*30)
-        print(f"\nActualmente tenemos {len(listaExperimentos)} registrados")
+        print(f"\nActualmente tenemos {len(listaExperimentos)} experimentos registrados")
         #Bucle while para solicitar el dato hasta que se ingrese un número entero
         while True:
             #try-except para manejar errores por si el usuario no ingresa un número entero
@@ -161,7 +161,11 @@ def eliminarExperimento(listaExperimentos):
                 print("\nEl tipo de dato ingresado no es valido. Por favor ingrese un número.")
                 input("Presione <Enter> para continuar")
             else:
-                break
+                if experimento_a_eliminar < 1 or experimento_a_eliminar > len(listaExperimentos):
+                    print("\nLa cantidad esta fuera de rango de los experimentos registrados. Por favor intente de nuevo")
+                    input("Presione <Enter> para continuar")
+                else:
+                    break
         #Se elimina el elemento de la lista de experimentos
         listaExperimentos.pop(experimento_a_eliminar-1)
         print("\nExperimento eliminado exitosamente.")
@@ -196,9 +200,9 @@ def compararExperimentos(listaExperimentos):
     else:
         print()
         print("#"*30)
-        print("MODULO DE COMPARATIVA DE EXPERIMENTOS")
+        print("MODULO DE COMPARACIÓN DE EXPERIMENTOS")
         print("#"*30)
-        print(f"\nActualmente tenemos {len(listaExperimentos)} registrados")
+        print(f"\nActualmente tenemos {len(listaExperimentos)} experimentos registrados")
     
         while True:
             try:
@@ -208,10 +212,10 @@ def compararExperimentos(listaExperimentos):
                 input("Presione <Enter> para continuar")
             else:
                 if experimentos_a_comparar < 2:
-                    print("\nDebe seleccionar minimo 2 experimentos para comparar. Por favor intente")
+                    print("\nDebe seleccionar minimo 2 experimentos para comparar. Por favor intente de nuevo.")
                     input("Presione Enter para continuar")
                 elif experimentos_a_comparar > len(listaExperimentos):
-                    print("\nEstimado usuario, ud no puede comparar una cantidad de experimentos que es mayor a la cantidad de experimentos registrados. Por favor intente")
+                    print("\nEstimado usuario, ud no puede comparar una cantidad de experimentos que es mayor a la cantidad de experimentos registrados. Por favor intente de nuevo.")
                     input("Presione Enter para continuar")
                 else:
                     break
@@ -261,7 +265,7 @@ def menu():
 3. Analisis de Resultados de Experimentos.
 4. Eliminar Experimento.
 5. Comparar Experimentos.
-6. Generar Informe de Resultados.
+6. Generar Informe de Experimentos.
 7. Salir del programa.""")
             
         #Bucle while para solicitar la opcion hasta que se ingrese un número entero
@@ -276,7 +280,7 @@ def menu():
          
         #Condicionales para ejecutar cada una de las opciones del menu     
         if opcion == 1:
-            ingresarExperimento(listaExperimentos)
+            ingresarExperimentos(listaExperimentos)
     
         elif opcion == 2:
             visualizarExperimentos(listaExperimentos)
